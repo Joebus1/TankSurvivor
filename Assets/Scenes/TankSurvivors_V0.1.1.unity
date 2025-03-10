@@ -529,6 +529,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &610636396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 610636398}
+  - component: {fileID: 610636397}
+  m_Layer: 0
+  m_Name: BorderManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &610636397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610636396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 802d0f682334f0f448af548ef8fedea5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  borderPrefab: {fileID: 6779682300571824730, guid: 980080d63686e2e4db483d7c85b009ed, type: 3}
+  width: 32
+  height: 32
+--- !u!4 &610636398
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610636396}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.8640537, y: 0.7579016, z: -0.03147873}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &628601875
 GameObject:
   m_ObjectHideFlags: 0
@@ -723,7 +770,7 @@ GameObject:
   - component: {fileID: 725339791}
   - component: {fileID: 725339792}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: TilemapGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3629,9 +3676,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 2743533367229424080, guid: 55770749f89b5774c8ed242ac7c0daf7, type: 3}
   player: {fileID: 1955148952}
-  initialSpawnRate: 5
-  spawnRateIncrease: 0.5
-  increaseInterval: 5
+  spawnRate: 2
+  mapWidth: 16
+  mapHeight: 16
 --- !u!4 &1419774516
 Transform:
   m_ObjectHideFlags: 0
@@ -3663,7 +3710,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1646544522
 Transform:
   m_ObjectHideFlags: 0
@@ -4156,3 +4203,4 @@ SceneRoots:
   - {fileID: 1646544522}
   - {fileID: 1419774516}
   - {fileID: 1988259186}
+  - {fileID: 610636398}
