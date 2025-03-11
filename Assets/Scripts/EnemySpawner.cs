@@ -43,6 +43,7 @@ public class EnemySpawner : MonoBehaviour
                 break;
         }
 
-        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        enemy.transform.Rotate(0, 0, Random.Range(0, 360)); // Random rotation
     }
 }

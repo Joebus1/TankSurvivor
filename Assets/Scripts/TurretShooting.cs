@@ -18,7 +18,13 @@ public class TurretShooting : MonoBehaviour
             nextFireTime = Time.time + fireRate;
         }
     }
-
+    void Start()
+    {
+        if (bulletPrefab == null || firePoint == null)
+        {
+            Debug.LogError("Bullet Prefab or Fire Point not assigned on " + gameObject.name);
+        }
+    }
     void Shoot()
     {
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);

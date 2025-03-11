@@ -4,6 +4,7 @@ public class Bullet : MonoBehaviour
 {
     public float speed = 10f;
     public float lifetime = 2f;  // Destroy bullet after 2 seconds
+    private bool hasHit = false; // Prevent multiple hits
 
     void Start()
     {
@@ -15,12 +16,21 @@ public class Bullet : MonoBehaviour
         transform.Translate(Vector2.up * speed * Time.deltaTime); // Move forward
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.CompareTag("Enemy"))  // Replace with actual enemy tag
+        if (hasHit) return; // Prevent multiple hits
+
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            Destroy(other.gameObject);  // Destroy enemy
+            Debug.Log($"Bullet hit enemy: {collision.gameObject.name}");
+            hasHit = true;
+            Destroy(collision.gameObject);  // Destroy enemy
             Destroy(gameObject);  // Destroy bullet
+        }
+        else if (collision.gameObject.CompareTag("Border"))
+        {
+            hasHit = true;
+            Destroy(gameObject);  // Destroy bullet on border hit
         }
     }
 }

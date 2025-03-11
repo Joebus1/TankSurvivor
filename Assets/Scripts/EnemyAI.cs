@@ -25,17 +25,17 @@ public class EnemyAI : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle + 90);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("Bullet"))
         {
-            Destroy(other.gameObject);
+            Debug.Log($"Enemy {gameObject.name} destroyed by bullet");
             Destroy(gameObject);
         }
-        else if (other.CompareTag("Player"))
+        else if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Player hit! Game Over!");
-            Destroy(other.gameObject);  // Destroys the player
+            Destroy(collision.gameObject);  // Destroys the player
             Time.timeScale = 0f;  // Pauses the game
         }
     }

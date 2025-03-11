@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8536820938309460241}
   - component: {fileID: 2069548877911227709}
   - component: {fileID: 6986822292014357821}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -29,9 +29,9 @@ Transform:
   m_GameObject: {fileID: 2743533367229424080}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.8635762, y: -2.2460296, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -79,12 +79,12 @@ SpriteRenderer:
   m_SortingLayerID: 1979526949
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bcccadd24908d704b95481ec0d6790f6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 34594db5cac3b584fb56559038c4b9de, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.32, y: 2.54}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -147,7 +147,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -155,17 +155,28 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.32, y: 2.54}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 0.5, y: 0.5}
+    newSize: {x: 1.32, y: 2.54}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 0.5773587}
-      - {x: -0.5, y: -0.28866667}
-      - {x: 0.5, y: -0.28866667}
+    - - {x: 0.10108679, y: 0.22559656}
+      - {x: 0.09473769, y: 0.15725233}
+      - {x: -0.116376184, y: 0.15087886}
+      - {x: -0.13941625, y: 0.06242632}
+      - {x: -0.24286553, y: -0.041023012}
+      - {x: -0.24286556, y: -0.13127948}
+      - {x: -0.18576123, y: -0.14244868}
+      - {x: -0.076842554, y: -0.2285967}
+      - {x: 0.116378255, y: -0.22345106}
+      - {x: 0.2009139, y: -0.14298345}
+      - {x: 0.2517836, y: -0.1282134}
+      - {x: 0.25713444, y: -0.030321352}
+      - {x: 0.1893573, y: 0.09453128}
+      - {x: 0.17687204, y: 0.2250295}
   m_UseDelaunayMesh: 0
 --- !u!114 &6986822292014357821
 MonoBehaviour:
