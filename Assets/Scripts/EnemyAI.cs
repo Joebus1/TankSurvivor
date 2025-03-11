@@ -4,14 +4,31 @@ public class EnemyAI : MonoBehaviour
 {
     public float speed = 2f;  // Adjust speed as needed
     private Transform player;
+    private GameManager gameManager;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            player = playerObj.transform;
+        }
+        else
+        {
+            Debug.LogError("Player not found! Ensure an object is tagged 'Player'.");
+        }
+
+        gameManager = FindObjectOfType<GameManager>();
+        if (gameManager == null)
+        {
+            Debug.LogError("GameManager not found in scene!");
+        }
     }
 
     void Update()
     {
+        if (gameManager == null || player == null) return; // Stop if game over or player is destroyed
+
         // Move the enemy towards the player
         transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
 
@@ -36,7 +53,10 @@ public class EnemyAI : MonoBehaviour
         {
             Debug.Log("Player hit! Game Over!");
             Destroy(collision.gameObject);  // Destroys the player
-            Time.timeScale = 0f;  // Pauses the game
+            if (gameManager != null)
+            {
+                gameManager.GameOver();  // Notify GameManager of game over
+            }
         }
     }
 }
