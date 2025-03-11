@@ -1,8 +1,19 @@
-# Ignore unnecessary Unity files
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.sln.docstates
+
+# Unity generated files
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
 [Bb]uild/
-[Bb]uilds/
-[Ll]ogs/
-[Uu]serSettings/
+*.pidb
+*.csproj
+*.unityproj
+*.sln
+*.booproj
+
+# Mac files
+.DS_Store

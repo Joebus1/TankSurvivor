@@ -3,8 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer), typeof(EdgeCollider2D))]
 public class BorderController : MonoBehaviour
 {
-    public float width = 20f;  // Width of the border in Unity units
-    public float height = 15f; // Height of the border in Unity units
+    public float width = 16f;  // Width of the border in Unity units
+    public float height = 16f; // Height of the border in Unity units
 
     private SpriteRenderer spriteRenderer;
     private EdgeCollider2D edgeCollider;
