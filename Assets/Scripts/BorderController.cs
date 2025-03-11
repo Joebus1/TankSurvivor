@@ -3,8 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer), typeof(EdgeCollider2D))]
 public class BorderController : MonoBehaviour
 {
-    public float width = 16f;  // Width of the border in Unity units
-    public float height = 16f; // Height of the border in Unity units
+    public float innerWidth = 16f;  // Inner playing field width
+    public float innerHeight = 16f; // Inner playing field height
+    public float borderThickness = 1f; // Thickness of the border (1 unit)
 
     private SpriteRenderer spriteRenderer;
     private EdgeCollider2D edgeCollider;
@@ -18,26 +19,33 @@ public class BorderController : MonoBehaviour
 
     void UpdateBorder()
     {
-        // Set the tiled sprite size
-        spriteRenderer.size = new Vector2(width, height);
+        // Total size includes border on both sides
+        float totalWidth = innerWidth + 2 * borderThickness;
+        float totalHeight = innerHeight + 2 * borderThickness;
 
-        // Define the collider points to form a rectangle
+        // Set the SpriteRenderer size to the total area (for visibility)
+        spriteRenderer.size = new Vector2(totalWidth, totalHeight);
+
+        // Define collider points for the inner and outer edges
         Vector2[] points = new Vector2[5]
         {
-            new Vector2(-width / 2, -height / 2), // Bottom-left
-            new Vector2(width / 2, -height / 2),  // Bottom-right
-            new Vector2(width / 2, height / 2),   // Top-right
-            new Vector2(-width / 2, height / 2),  // Top-left
-            new Vector2(-width / 2, -height / 2)  // Back to bottom-left to close the loop
+            new Vector2(-totalWidth / 2, -totalHeight / 2), // Bottom-left (outer)
+            new Vector2(totalWidth / 2, -totalHeight / 2),  // Bottom-right (outer)
+            new Vector2(totalWidth / 2, totalHeight / 2),   // Top-right (outer)
+            new Vector2(-totalWidth / 2, totalHeight / 2),  // Top-left (outer)
+            new Vector2(-totalWidth / 2, -totalHeight / 2)  // Back to bottom-left
         };
         edgeCollider.points = points;
+
+        // Optional: Adjust sprite tiling to show only the border (advanced)
+        // For now, the tiling will cover the whole area, but the collider defines the collision
     }
 
     // Optional: For testing in the Inspector
-    public void SetSize(float newWidth, float newHeight)
+    public void SetSize(float newInnerWidth, float newInnerHeight)
     {
-        width = newWidth;
-        height = newHeight;
+        innerWidth = newInnerWidth;
+        innerHeight = newInnerHeight;
         UpdateBorder();
     }
 }

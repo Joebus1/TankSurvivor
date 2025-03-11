@@ -1,2 +1,13 @@
 fileFormatVersion: 2
 guid: 6b8a6fe326b2af5449744db7c8a8dccd
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - tilemap: {instanceID: 0}
+  - grassTile: {fileID: 11400000, guid: f072c1d22cbbe844bb78f6266d31a98b, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

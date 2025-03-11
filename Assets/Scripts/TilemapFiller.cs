@@ -5,8 +5,8 @@ public class TilemapFiller : MonoBehaviour
 {
     public Tilemap tilemap;    // Assign your grass tilemap here
     public TileBase grassTile; // Assign your grass tile here
-    public int width = 20;     // Match your border width
-    public int height = 15;    // Match your border height
+    public int width = 16;     // Match your border width
+    public int height = 16;    // Match your border height
 
     void Start()
     {
