@@ -8,8 +8,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // Find the player's health component at the start
-        playerHealth = FindObjectOfType<PlayerHealth>();
+        // Updated to use FindFirstObjectByType (replaces obsolete FindObjectOfType)
+        // This finds the first active PlayerHealth component in the scene, which is more efficient
+        playerHealth = FindFirstObjectByType<PlayerHealth>();
         if (playerHealth == null)
         {
             Debug.LogError("PlayerHealth not found in scene!");
