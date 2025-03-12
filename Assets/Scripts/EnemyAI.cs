@@ -5,6 +5,8 @@ public class EnemyAI : MonoBehaviour
     public float speed = 2f;  // Adjust speed as needed
     private Transform player;
     private GameManager gameManager;
+    private float lastAttackTime; // Track the last attack time
+    public float attackCooldown = 1f; // Time between attacks in seconds
 
     void Start()
     {
@@ -18,11 +20,12 @@ public class EnemyAI : MonoBehaviour
             Debug.LogError("Player not found! Ensure an object is tagged 'Player'.");
         }
 
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindFirstObjectByType<GameManager>();
         if (gameManager == null)
         {
             Debug.LogError("GameManager not found in scene!");
         }
+        lastAttackTime = -attackCooldown; // Initialize to allow immediate first attack
     }
 
     void Update()
@@ -51,11 +54,16 @@ public class EnemyAI : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player hit! Game Over!");
-            Destroy(collision.gameObject);  // Destroys the player
-            if (gameManager != null)
+            // Check if enough time has passed since the last attack
+            if (Time.time - lastAttackTime >= attackCooldown)
             {
-                gameManager.GameOver();  // Notify GameManager of game over
+                Debug.Log("Player hit!");
+                PlayerHealth health = collision.gameObject.GetComponent<PlayerHealth>();
+                if (health != null)
+                {
+                    health.TakeDamage(1); // Deal 1 damage to the player
+                }
+                lastAttackTime = Time.time; // Update the last attack time
             }
         }
     }
