@@ -5,13 +5,21 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyPrefab; // The enemy prefab to spawn
     public Transform player; // Reference to the player's transform
     public float spawnRate = 2f; // Time between spawns in seconds
-    public int mapWidth = 16; // Match this with BorderManager (playable area width)
-    public int mapHeight = 16; // Match this with BorderManager (playable area height)
-    public float borderThickness = 1f; // Thickness of the border (to spawn inside)
     public float minSpawnDistance = 5f; // Minimum distance from player to spawn
     public float maxSpawnDistance = 10f; // Maximum distance from player to spawn
 
     private float nextSpawnTime;
+    private MapSettings mapSettings; // Reference to MapSettings
+
+    private void Start()
+    {
+        // Find the MapSettings instance
+        mapSettings = MapSettings.Instance;
+        if (mapSettings == null)
+        {
+            Debug.LogError("MapSettings not found in scene!");
+        }
+    }
 
     private void Update()
     {
@@ -24,35 +32,43 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemy()
     {
-        // Calculate the playable area bounds (inside the border)
-        float minX = -mapWidth / 2 + borderThickness;
-        float maxX = mapWidth / 2 - borderThickness;
-        float minY = -mapHeight / 2 + borderThickness;
-        float maxY = mapHeight / 2 - borderThickness;
+        if (mapSettings == null) return; // Safety check
 
-        Vector3 spawnPosition = Vector3.zero; // Initialize to avoid unassigned variable error
+        // Get map size and border thickness from MapSettings
+        float mapWidth = mapSettings.GetMapWidth();
+        float mapHeight = mapSettings.GetMapHeight();
+        float borderThickness = mapSettings.GetBorderThickness();
+
+        // Calculate the outer bounds (outside the border)
+        float outerMinX = -mapWidth / 2 - borderThickness;
+        float outerMaxX = mapWidth / 2 + borderThickness;
+        float outerMinY = -mapHeight / 2 - borderThickness;
+        float outerMaxY = mapHeight / 2 + borderThickness;
+
+        Vector3 spawnPosition = Vector3.zero;
         bool validPosition = false;
         int maxAttempts = 10; // Prevent infinite loops
 
-        // Keep trying to find a valid spawn position
+        // Keep trying to find a valid spawn position outside the border
         for (int i = 0; i < maxAttempts; i++)
         {
-            // Randomly choose a position within the playable area
-            float spawnX = Random.Range(minX, maxX);
-            float spawnY = Random.Range(minY, maxY);
-            spawnPosition = new Vector3(spawnX, spawnY, 0);
-
-            // Calculate the direction from player to spawn position
-            Vector3 directionToSpawn = (spawnPosition - player.position).normalized;
-
-            // Prefer spawning on the opposite side by adjusting the position
-            // Move the spawn point further in the opposite direction of the player
-            Vector3 oppositeDirection = -player.position.normalized;
-            spawnPosition = player.position + oppositeDirection * Random.Range(minSpawnDistance, maxSpawnDistance);
-
-            // Clamp the position to stay within the playable area
-            spawnPosition.x = Mathf.Clamp(spawnPosition.x, minX, maxX);
-            spawnPosition.y = Mathf.Clamp(spawnPosition.y, minY, maxY);
+            // Choose a random side to spawn outside (0: left, 1: right, 2: bottom, 3: top)
+            int side = Random.Range(0, 4);
+            switch (side)
+            {
+                case 0: // Left side (outside)
+                    spawnPosition = new Vector3(outerMinX - 1, Random.Range(outerMinY, outerMaxY), 0);
+                    break;
+                case 1: // Right side (outside)
+                    spawnPosition = new Vector3(outerMaxX + 1, Random.Range(outerMinY, outerMaxY), 0);
+                    break;
+                case 2: // Bottom side (outside)
+                    spawnPosition = new Vector3(Random.Range(outerMinX, outerMaxX), outerMinY - 1, 0);
+                    break;
+                case 3: // Top side (outside)
+                    spawnPosition = new Vector3(Random.Range(outerMinX, outerMaxX), outerMaxY + 1, 0);
+                    break;
+            }
 
             // Check if the spawn position is within the min/max distance from the player
             float distanceToPlayer = Vector3.Distance(spawnPosition, player.position);
@@ -65,12 +81,23 @@ public class EnemySpawner : MonoBehaviour
 
         if (!validPosition)
         {
-            // Fallback: Spawn at a random position inside the bounds if no valid position found
-            spawnPosition = new Vector3(
-                Random.Range(minX, maxX),
-                Random.Range(minY, maxY),
-                0
-            );
+            // Fallback: Choose a random side and spawn outside without distance check
+            int side = Random.Range(0, 4);
+            switch (side)
+            {
+                case 0: // Left side (outside)
+                    spawnPosition = new Vector3(outerMinX - 1, Random.Range(outerMinY, outerMaxY), 0);
+                    break;
+                case 1: // Right side (outside)
+                    spawnPosition = new Vector3(outerMaxX + 1, Random.Range(outerMinY, outerMaxY), 0);
+                    break;
+                case 2: // Bottom side (outside)
+                    spawnPosition = new Vector3(Random.Range(outerMinX, outerMaxX), outerMinY - 1, 0);
+                    break;
+                case 3: // Top side (outside)
+                    spawnPosition = new Vector3(Random.Range(outerMinX, outerMaxX), outerMaxY + 1, 0);
+                    break;
+            }
         }
 
         // Spawn the enemy

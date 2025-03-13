@@ -3,15 +3,20 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer), typeof(EdgeCollider2D))]
 public class BorderController : MonoBehaviour
 {
-    public float innerWidth = 16f;  // Inner playing field width
-    public float innerHeight = 16f; // Inner playing field height
-    public float borderThickness = 1f; // Thickness of the border (1 unit)
-
     private SpriteRenderer spriteRenderer;
     private EdgeCollider2D edgeCollider;
+    private MapSettings mapSettings; // Reference to MapSettings
 
     void Start()
     {
+        // Find the MapSettings instance
+        mapSettings = MapSettings.Instance;
+        if (mapSettings == null)
+        {
+            Debug.LogError("MapSettings not found in scene!");
+            return;
+        }
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         edgeCollider = GetComponent<EdgeCollider2D>();
         UpdateBorder();
@@ -19,6 +24,11 @@ public class BorderController : MonoBehaviour
 
     void UpdateBorder()
     {
+        // Get map size and border thickness from MapSettings
+        float innerWidth = mapSettings.GetMapWidth();
+        float innerHeight = mapSettings.GetMapHeight();
+        float borderThickness = mapSettings.GetBorderThickness();
+
         // Total size includes border on both sides
         float totalWidth = innerWidth + 2 * borderThickness;
         float totalHeight = innerHeight + 2 * borderThickness;
@@ -36,16 +46,17 @@ public class BorderController : MonoBehaviour
             new Vector2(-totalWidth / 2, -totalHeight / 2)  // Back to bottom-left
         };
         edgeCollider.points = points;
-
-        // Optional: Adjust sprite tiling to show only the border (advanced)
-        // For now, the tiling will cover the whole area, but the collider defines the collision
     }
 
     // Optional: For testing in the Inspector
     public void SetSize(float newInnerWidth, float newInnerHeight)
     {
-        innerWidth = newInnerWidth;
-        innerHeight = newInnerHeight;
-        UpdateBorder();
+        // Update MapSettings instead of local variables
+        if (mapSettings != null)
+        {
+            mapSettings.mapWidth = newInnerWidth;
+            mapSettings.mapHeight = newInnerHeight;
+            UpdateBorder();
+        }
     }
 }
