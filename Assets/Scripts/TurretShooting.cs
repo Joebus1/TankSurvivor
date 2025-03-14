@@ -2,25 +2,17 @@ using UnityEngine;
 
 public class TurretShooting : MonoBehaviour
 {
-    public GameObject bulletPrefab;  // Assign in Inspector
-    public Transform firePoint;  // Empty object for spawn position
-    public float bulletSpeed = 10f;
-    public float fireRate = 0.5f;  // Fire every 0.5s
-    private float nextFireTime = 0f;
+    public GameObject bulletPrefab;
+    public float fireRate = 0.5f;
+    public Transform firePoint;
+    public ParticleSystem muzzleFlash; // Reference to the muzzle flash particle system
 
-    void Start()
-    {
-        if (bulletPrefab == null || firePoint == null)
-        {
-            Debug.LogError("Bullet Prefab or Fire Point not assigned on " + gameObject.name);
-        }
-    }
+    private float nextFireTime;
 
     void Update()
     {
-        Debug.Log("Fire Rate: " + fireRate); // This will show the current fire rate in the console
-       
-        if (Input.GetMouseButton(0) && Time.time >= nextFireTime)  // Left click to shoot
+        // Check for Space key or left mouse button
+        if ((Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) && Time.time >= nextFireTime)
         {
             Shoot();
             nextFireTime = Time.time + fireRate;
@@ -28,24 +20,25 @@ public class TurretShooting : MonoBehaviour
     }
 
     void Shoot()
-{
-    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-    bullet.layer = LayerMask.NameToLayer("Bullet"); // Set bullet layer
-    Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-    if (bulletRb != null)
     {
-        bulletRb.bodyType = RigidbodyType2D.Dynamic;
-        bulletRb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-        bulletRb.linearVelocity = firePoint.up * bulletSpeed;
+        if (bulletPrefab != null && firePoint != null)
+        {
+            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+
+            if (muzzleFlash != null)
+            {
+                muzzleFlash.Clear();
+                muzzleFlash.Play();
+                Debug.Log("Muzzle flash played!");
+            }
+            else
+            {
+                Debug.LogWarning("MuzzleFlash is not assigned or not found!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("bulletPrefab or firePoint is not assigned!");
+        }
     }
-    bullet.SetActive(true); // Ensure the bullet is active
-}
-    void OnDrawGizmos()
-{
-    if (firePoint != null)
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(firePoint.position, 0.1f);
-    }
-}
 }
